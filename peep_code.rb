@@ -41,7 +41,7 @@ module PeepCode
       dir = File.join(save_dir, @description)
       thumb_file = File.join(dir, "thumbnail#{File.extname(@thumbnail.path)}")
 
-      Dir.mkdir(dir) unless File.exists?(dir)
+      FileUtils.mkdir_p(dir) unless File.exists?(dir)
       unless File.exists?(thumb_file)
         session.get("https://peepcode.com#{@thumbnail}").save(thumb_file)
       end
