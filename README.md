@@ -1,7 +1,12 @@
-# PeepCode dump
+# PeepCode download / sync
 
-A script for dumping [PeepCode][0] screencasts.  Get `auth` key by looking at your
-cookies while logged in to PeepCode (e.g. in Chrome, F12 -> Resources -> Cookies).
+A script for downloading [PeepCode][0] screencasts (skips already-downloaded ones).
+
+Get `auth` key by looking at your cookies while logged in to PeepCode (e.g. in
+Chrome, F12 -> Resources -> Cookies; alternatively use JavaScript console and
+inspect `document.cookie`).
+
+Tested on my unlimited account.
 
 ## Synopsis
 
@@ -14,8 +19,10 @@ screencasts = session_pool.screencasts
 s = screencasts.find{|s| s.id == 'play-by-play-aaroncorey'}
 session_pool.dump_screencast('/home/abe/Dropbox/Screencasts/PeepCode', s)
 
-# dump all screencasts asynchronously (add .map(&:value) to end if you want to block on this line)
-screencasts.map{|s| session_pool.future.dump_screencast('/home/abe/Dropbox/Screencasts/PeepCode', s)}
+# dump all screencasts asynchronously
+futures = screencasts.map{|s| session_pool.future.dump_screencast('/home/abe/Dropbox/Screencasts/PeepCode', s)}
+# (optional) if you want to wait for all downloads to complete:
+futures.map(&:value)
 ```
 
 [0]: https://peepcode.com/
