@@ -32,7 +32,7 @@ module PeepCode
 
     def initialize(dom_node)
       @id = dom_node.at('small a').attr('href').match(/\/products\/(?<id>\S*)/)[:id]
-      @description = dom_node.at('small a').text.strip
+      @description = dom_node.at('small a').text.strip.gsub('/', '⁄')
       @thumbnail = URI(dom_node.at('img').attr('src'))
     end
 
